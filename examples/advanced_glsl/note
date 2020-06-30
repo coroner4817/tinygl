@@ -1,0 +1,40 @@
+Advanced GLSL
+
+1, gl_PointSize
+  - when draw GL_POINTS, we can specify the point size using gl_PointSize in the vertex buffer
+  - need to glEnable(GL_PROGRAM_POINT_SIZE); before draw
+
+2, at vertex buffer we can access the current using vertex ID by querying gl_VertexID
+
+3, we can use the gl_FrontFacing in the fragment shader to determine if the current fragment is facing the user
+  even without enable the GL_FACE_CULL
+
+  uniform sampler2D frontTexture;
+  uniform sampler2D backTexture;
+  void main()
+  {
+    // we can aply different texture to the front and back face fragment
+    if(gl_FrontFacing)
+        FragColor = texture(frontTexture, TexCoords);
+    else
+        FragColor = texture(backTexture, TexCoords);
+  }
+
+4, gl_FragDepth: the depth of the current fragment
+    - can be set at the vertex/fragment shader, if not set then it's value is gl_FragCoord.z
+    - this is causing issues with depth testing
+    - from gl420 we can define what action are we going to modify the depth value
+      - layout (depth_<condition>) out float gl_FragDepth;
+      - e.g. if layout (depth_greater) then when changing the gl_FragDepth, we must make it larger than gl_FragCoord.z
+
+5, interface block: can output a struct to the pipeline
+
+    out VS_OUT
+    {
+      vec2 TexCoords;
+    } vs_out;
+
+    in VS_OUT
+    {
+        vec2 TexCoords;
+    } fs_in;
