@@ -363,7 +363,7 @@ public:
     glBindVertexArray(0);
   };
 
-  unsigned int useCubemapTexture(){
+  void useCubemapTexture(){
     glActiveTexture(GL_TEXTURE0 + activeID_);
     glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTextureId_);
   }

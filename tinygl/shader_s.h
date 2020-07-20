@@ -34,7 +34,7 @@ public:
     const char* code_c = code.c_str();
     glShaderSource(shaderID, 1, &code_c, NULL);
     glCompileShader(shaderID);
-    checkCompileErrors(shaderID, name);
+    checkCompileErrors(shaderID, name, path);
     return shaderID;
   }
 
@@ -55,7 +55,7 @@ public:
     glAttachShader(ID, fragment);
     if(!geometryPath.empty()) glAttachShader(ID, geometry);
     glLinkProgram(ID);
-    checkCompileErrors(ID, "PROGRAM");
+    checkCompileErrors(ID, "PROGRAM", vertexPath + fragmentPath);
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
@@ -154,7 +154,7 @@ public:
 private:
   // utility function for checking shader compilation/linking errors.
   // ------------------------------------------------------------------------
-  void checkCompileErrors(unsigned int shader, const std::string& type)
+  void checkCompileErrors(unsigned int shader, const std::string& type, const std::string& path)
   {
     int success;
     char infoLog[1024];
@@ -165,6 +165,7 @@ private:
       {
         glGetShaderInfoLog(shader, 1024, NULL, infoLog);
         std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n"
+                  << "Path: " << path << "\n"
                   << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
       }
     }
@@ -175,6 +176,7 @@ private:
       {
         glGetProgramInfoLog(shader, 1024, NULL, infoLog);
         std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n"
+                  << "Path: " << path << "\n"
                   << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
       }
     }
