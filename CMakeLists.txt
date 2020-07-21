@@ -604,6 +604,16 @@ target_link_libraries(${SUB_TARGET_NAME}
 posthandler()
 
 ##############################################
+set(SUB_TARGET_NAME cloth_animation)
+add_executable(${SUB_TARGET_NAME}
+  examples/${SUB_TARGET_NAME}/${SUB_TARGET_NAME}.cpp
+)
+target_link_libraries(${SUB_TARGET_NAME}
+  ${ALL_LIBS}
+)
+posthandler()
+
+##############################################
 MESSAGE(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 MESSAGE(STATUS "Library Type: " ${LIB_TYPE})
 MESSAGE(STATUS "Compiler flags:" ${CMAKE_CXX_COMPILE_FLAGS})

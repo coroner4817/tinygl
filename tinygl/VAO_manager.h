@@ -82,7 +82,7 @@ public:
 
   // hard coded have to input all data and properity for all attribute
   // the buffer format is 123123123123
-  unsigned int generateNewVAOFromArray(std::string name, const void *vertices, int vertices_sz, const std::vector<AttrProperity> &attrprop, const void *indices=nullptr, int indices_sz=0)
+  unsigned int generateNewVAOFromArray(std::string name, const void *vertices, int vertices_sz, const std::vector<AttrProperity> &attrprop, const void *indices=nullptr, int indices_sz=0, bool dynamic_draw=false)
   {
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
@@ -91,7 +91,7 @@ public:
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices_sz, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices_sz, vertices, dynamic_draw ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
     if(indices){
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_sz, indices, GL_STATIC_DRAW);
@@ -144,5 +144,17 @@ public:
     VAOList_[name] = {false, VAO};
     glBindVertexArray(0);
     return VAO;
+  }
+
+  // keep the same size, layout and indices
+  void updateVBOData(std::string name, const void *vertices, int vertices_sz)
+  {
+    if (VAOList_.find(name) == VAOList_.end())
+      return;
+    VAOIDs hitVAO = VAOList_[name];
+
+    glBindBuffer(GL_ARRAY_BUFFER, hitVAO.VBOid);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, vertices_sz, vertices);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 };
