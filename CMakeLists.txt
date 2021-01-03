@@ -39,6 +39,10 @@ endif()
 
 ##############################################
 find_package(OpenGL REQUIRED)
+find_package(glm REQUIRED)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
 
 # Compile external dependencies
 add_subdirectory (external)
@@ -46,10 +50,9 @@ add_subdirectory (external/glad-ogl-4.5.0)
 
 include_directories(
   ${OPENGL_INCLUDE_DIRS}
+  ${GLM_INCLUDE_DIRS}
   external/AntTweakBar-1.16/include/
   external/glad-ogl-4.5.0/include/
-  external/glfw-3.1.2/include/
-  external/glm-0.9.7.1/
   external/glew-1.13.0/include/
   external/assimp-3.0.1270/include/
   external/bullet-2.81-rev2613/src/
@@ -60,10 +63,13 @@ include_directories(
 
 set(ALL_LIBS
   ${OPENGL_LIBRARY}
-  glfw
+  ${GLFW_LIBRARIES}
   GLEW_1130
   glad
 )
+
+MESSAGE(STATUS "-----: " ${GLFW_LIBRARIES})
+MESSAGE(STATUS "-----: " ${GLM_INCLUDE_DIRS})
 
 set(MODEL_LIBS
   assimp

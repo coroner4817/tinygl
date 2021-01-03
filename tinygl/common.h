@@ -112,9 +112,9 @@ const glm::mat4 GetModelMat(const glm::vec3& pos,
   ret = glm::translate(ret, pos);
   if(angle != 0.f){
     // this is because it is multiply from right to left
-    ret = glm::translate(ret, scl/2);
+    ret = glm::translate(ret, scl * 0.5f);
     ret = glm::rotate(ret, angle, axis);
-    ret = glm::translate(ret, -scl/2);
+    ret = glm::translate(ret, -scl * 0.5f);
   }
   ret = glm::scale(ret, scl);
   return ret;
